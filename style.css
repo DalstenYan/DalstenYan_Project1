@@ -137,3 +137,28 @@ html, body, .about-me
 {
     background-color: rgba(0, 0, 0, 0.53);
 }
+
+.contactpage
+{
+    background-color: #2a3d45;
+    color:white;
+    font-family: "Lexend";
+    font-weight: 500;
+    padding: 5px;
+}
+.contactpage h1, .submit
+{
+    text-align: center;
+    font-weight: 700;
+    margin-top: 10px;
+}
+.form-floating label
+{
+    color:black;
+    padding: 0px;
+}
+
+.input-group, .input-group-text
+{
+    margin:0px;
+}
