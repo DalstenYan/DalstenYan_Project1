@@ -19,33 +19,37 @@
           $("#nav-placeholder").load("navbar.html")
       })
     </script>
+    <script src="formValidation.js" defer></script>
 </head>
 <body>
     <div id="nav-placeholder"></div>
     
     <div class="contactpage">
         <h1>Contact Me</h1>
-        <form action="">
+        <form id="contactform" class="was-validated" action="https://wp.zybooks.com/form-viewer.php" method="post">
             <div class="input-group">
                 <span class="input-group-text">First and last name</span>
-                <input type="text" aria-label="First name" class="form-control">
+                <input id="name" type="text" aria-label="First name" class="form-control" required>
+                <div class="invalid-feedback">Please fill out your name.</div>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                <div class="invalid-feedback">Please fill out your email.</div>
             </div>
             <div class="mb-3">
                 <label for="message" class="form-label">Message</label>
-                <textarea class="form-control" id="message" rows="3" placeholder="Type your message here"></textarea>
+                <textarea class="form-control" id="message" rows="3" placeholder="Type your message here" required></textarea>
+                <div class="invalid-feedback">Please type your message.</div>
             </div>
             <div class="form-floating">
-                <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                  <option selected="">Choose</option>
+                <select class="form-select" id="timezone" aria-label="Floating label select example" required>
+                  <option selected disabled value="">Choose</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
                   <option value="3">Three</option>
                 </select>
-                <label for="floatingSelect">Timezone</label>
+                <label for="timezone">Timezone</label>
             </div>
             <div class="submit">
                 <button class="btn btn-primary" type="submit">Submit form</button>
