@@ -109,5 +109,31 @@ html, body, .about-me
 
 .goals
 {
+    display:flex;
+    background-color: rgba(59, 59, 59, 0.699);
+    color: white;
+    height: fit-content;
+    width: fit-content;
+    margin-inline: auto;
+    padding: 10px;
     text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.bg-img1
+{
+    background-image:url(img/classroom.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.carousel-inner img
+{
+    width: 800px;
+    aspect-ratio: 2/1;
+}
+.carousel-caption
+{
+    background-color: rgba(0, 0, 0, 0.53);
 }
