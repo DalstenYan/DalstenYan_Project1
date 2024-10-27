@@ -162,3 +162,56 @@ html, body, .about-me
 {
     margin:0px;
 }
+.socialcards
+{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: center;
+}
+.card {
+    text-align: center;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    aspect-ratio: 1/1;
+    background-color: #ce6d8b;
+    transition: box-shadow 0.3s; 
+}
+.card h3
+{
+    margin: 0px;
+}
+
+.card:hover {
+    box-shadow: 15px 15px 25px rgba(0, 0, 0, 0.2);
+    color: black;
+    transition: transform 0.3s;
+    transform: scale(1.05); 
+}
+
+  .card-image {
+    max-height: 150px;
+    object-fit: contain;              
+    border-radius: 4px;     
+    margin-bottom: 5px;
+    transition: transform 0.3s;     
+}
+.card:hover .card-image
+{
+    transform: scale(1.025); 
+}
+
+.row {margin: 0 -5px;}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.column {
+    width: 20%;
+    padding: 0 10px;
+  }
