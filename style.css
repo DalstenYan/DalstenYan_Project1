@@ -162,7 +162,7 @@ html, body, .about-me
 {
     margin:0px;
 }
-.socialcards
+.socialcards, #projectgroup
 {
     box-sizing: border-box;
     margin: 0;
@@ -172,6 +172,46 @@ html, body, .about-me
     gap: 20px;
     justify-content: center;
 }
+
+#projectgroup
+{
+    font-family: "Arvo";
+    border: 1px solid;
+    border-radius: 10px;
+    background-color: #2a3d45;
+    color:white;
+    padding: 0px;
+    margin: 15px;
+}
+
+.projectcard
+{
+    background-color: #3e92cc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.list-group-item
+{
+    padding-inline: 7px;
+}
+
+.projectcard img
+{
+    text-align: center;
+    max-width: 93%;
+    object-fit: cover;
+    display: block;
+}
+
+.card-title
+{
+    padding-top: 10px;
+    font-weight: 700;
+    text-align: center;
+    font-size: 1.5vw;
+}
+
 .card {
     text-align: center;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
@@ -183,6 +223,15 @@ html, body, .about-me
 .card h3
 {
     margin: 0px;
+}
+
+.skillcard
+{
+    background-color: white;
+    border-radius: 15px;
+    padding-bottom: 4px;
+    height: fit-content;
+
 }
 
 .card:hover {
