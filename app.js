@@ -31,3 +31,25 @@ con.query(q, (err, res) => {
 
 
 app.use(morgan('dev'))
+
+app.use(express.static('Public'))
+app.use(express.urlencoded({extended:false}))
+
+app.set('view engine', 'ejs')
+app.set('views', 'views')
+
+//routes
+app.get("/displayRequests", (req,res) =>{
+    const q = "select * from request"
+    con.query(q, (err,results) =>{
+        if(err) throw err;
+        console.log(results);
+        res.render("displayRequests", {request:results})
+    }) 
+})
+
+
+//listen
+app.listen(port, () =>{
+    console.log("The server is running at port: " + port)
+})
