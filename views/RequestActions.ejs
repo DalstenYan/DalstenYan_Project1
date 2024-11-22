@@ -20,16 +20,16 @@
               $("#nav-placeholder").load("navbar.html")
           })
         </script>
+         <script src="/requestformValidation.js" defer></script>
 </head>
 <header>
     <div id="nav-placeholder"></div>
-    <!-- End Example Code -->
+
 </header>
 <body data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" style="overflow: visible; height: fit-content;">
 
-    <!-- Navbar -->
     <nav id="navbar-example2" class="navbar fixed-top bg-dark px-3 mb-3">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">Navigation</a>
         <ul class="nav nav-pills">
           <li class="nav-item">
             <a class="nav-link" href="#scrollspyHeading1">Make Request</a>
@@ -45,15 +45,54 @@
           </li>
         </ul>
     </nav>
-    <!-- Content Sections -->
-    <div> <!-- Ensure enough height for scrolling -->
-      <h2 id="scrollspyHeading1">First heading</h2>
-      <p>Content for the first section...</p>
-      <p>Content for the first section...</p>
-      <p>Content for the first section...</p>
-      <p>Content for the first section...</p>
-      <p>Content for the first section...</p>
-      <p>Content for the first section...</p>
+
+    <div>
+      <h2 id="scrollspyHeading1">Make a Request</h2>
+      <div class="requestform">
+        <form action="/RequestActions" method="post" id="requestform" novalidate>
+          <h1 id="requesttitle">Request Form</h1>
+          <div class="mb-3">
+            <label for="username" class="form-label">Your Full Name</label>
+            <input required name="username" type="text" class="form-control" id="username" placeholder="Johnny Appleseed">      
+          </div>
+          <div class="mb-3">
+            <label for="reqtype" class="form-label">Request Type</label>
+            <select required name="reqtype" class="form-select" aria-label="Default select example" id="reqtype">
+              <option value="">Choose an option</option>
+              <option value="Front-End Job">Front-End</option>
+              <option value="Back-End Job">Back-End</option>
+              <option value="Full-Stack">Full Stack</option>
+              <option value="Video Game Job">Video Game</option>
+            </select>     
+          </div>
+          <div class="mb-3">
+            <label required for="userdesc" class="form-label">Request Description</label>
+            <textarea name="userdesc" class="form-control" id="userdesc" rows="4"></textarea>
+          </div>
+          <div style="text-align: center;">
+            <input type="submit"  class="btn btn-lg submitbutton" value="Submit Request!">
+          </div>
+        </form>
+      </div>
+
+      <!--modal stuff-->
+      <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="errorModalLabel">Error</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="errorMessages">
+              <!-- Error messages will go here -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <h2 id="scrollspyHeading2">All Submitted Requests</h2>    
       <p>Want me to help you write some software or develop an application for you?</p>
       <p>You're in luck, just let me know the job type and I can get it done!</p>
