@@ -39,12 +39,12 @@ app.set('view engine', 'ejs')
 app.set('views', 'views')
 
 //routes
-app.get("/displayRequests", (req,res) =>{
+app.get("/RequestActions", (req,res) =>{
     const q = "select * from request"
     con.query(q, (err,results) =>{
         if(err) throw err;
         console.log(results);
-        res.render("displayRequests", {request:results})
+        res.render("RequestActions", {request:results})
     }) 
 })
 

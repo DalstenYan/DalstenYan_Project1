@@ -1,16 +1,14 @@
-*
-{
-    margin: 10px;
-}
+
 html, body, .about-me
 {
+    margin: 7px;
     height: 100%;
 }
 
-.navbar * 
+.navbar .container-fluid, .navbar .dropdown-menu  
 {
     background-color: #CE2D4F;
-    padding: 3px;
+    padding: 10px;
     margin: 1px;
 }
 .navbar .form-control
@@ -224,6 +222,17 @@ html, body, .about-me
 {
     margin: 0px;
 }
+#navbar-example2 .nav-item
+{
+    background-color: transparent;
+}
+
+#navbar-example2 {
+    background-color: #2a3d45;
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+}
 
 .skillcard
 {
@@ -262,5 +271,30 @@ html, body, .about-me
 }
 .column {
     width: 20%;
-    padding: 0 10px;
+    padding: 10px;
   }
+
+.requests-table table
+  {
+    width: 100%;
+  }
+
+.requests-table table td
+{
+    max-height: 300px; /* Set the minimum height for table cells */
+    padding: 20px; /* Optional padding to adjust the spacing around content */
+}
+.requests-table table tr
+{
+    height: auto;
+}
+
+.requests-table th, .requests-table td
+{
+    text-align: center;
+    word-wrap: normal;
+    padding: 12px 9px 12px 0px;
+    max-width: min-content;
+    vertical-align: middle; /* Vertically center the content in the cell */
+
+}
