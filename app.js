@@ -60,6 +60,78 @@ app.post("/RequestActions", (req, res) =>
         res.redirect("/RequestActions");
     })
 
+    app.post('/modify', (req, res) => {
+        const { requestId, newTitle, newDescription } = req.body;
+        const actionType = req.body.actionType;
+      
+        if (actionType === 'update') {
+          // Perform update action
+          const query = 'UPDATE requests SET title = ?, description = ? WHERE id = ?';
+          db.query(query, [newTitle, newDescription, requestId], (err, result) => {
+            if (err) {
+              console.error('Error updating request:', err.stack);
+              return res.status(500).send('Error updating request');
+            }
+      
+            res.redirect('/');
+          });
+        } else if (actionType === 'delete') {
+          // Perform delete action
+          const query = 'DELETE FROM requests WHERE id = ?';
+          con.query(query, [requestId], (err, result) => {
+            if (err) {
+              console.error('Error deleting request:', err.stack);
+              return res.status(500).send('Error deleting request');
+            }
+      
+            res.redirect('/');
+          });
+        } else {
+          res.status(400).send('Invalid action');
+        }
+      });
+
+
+      app.get('/getRequestData/:id', (req, res) => {
+        const requestId = req.params.id;
+
+        con.query('SELECT * FROM request WHERE id = ?', [requestId], (err, result) => {
+          if (err) {
+              console.error('Error querying the database:', err);
+              res.status(500).send({ error: 'Database error' });
+          } else {
+              if (result.length > 0) {
+                  res.json(result[0]);  
+              } else {
+                  res.status(404).send({ error: 'Request not found' });
+              }
+          }
+        });
+      });
+
+      app.delete('/deleteRequest/:id', (req, res) => {
+        const requestId = req.params.id
+        console.log(requestId)
+
+        con.query('DELETE FROM request WHERE id = ?', [requestId], (err, result) => {
+            if (err) {
+                console.error('Error deleting from database:', err);
+                res.status(500).send({ error: 'Database error' });
+            } else {
+                if (result.affectedRows > 0) {
+                    res.status(222).send("ITS DONE")
+                } else {
+                    res.status(404).send({ error: 'Request not found' });
+                }
+            }
+            
+        });
+        
+    });
+
+
+
+
 //listen
 app.listen(port, () =>{
     console.log("The server is running at port: " + port)

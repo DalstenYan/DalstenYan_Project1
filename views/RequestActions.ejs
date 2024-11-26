@@ -41,7 +41,7 @@
             <a class="nav-link" href="#scrollspyHeading3">Find Requests</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#scrollspyHeading5">placeholder</a>
+            <a class="nav-link" href="#scrollspyHeading4">Modify Requests</a>
           </li>
         </ul>
     </nav>
@@ -109,7 +109,7 @@
         </thead>
         <tbody>
             <% request.forEach(request => { %>
-                <tr>
+                <tr onclick="getRequestData(<%= request.ID %>)" style="cursor: pointer;" data-id="<%= request.ID %>">
                     <td><%= request.ID %></td>
                     <td><%= request.Name %></td>
                     <td><%= request.Request_Date.toLocaleDateString('en-US') %></td>
@@ -120,7 +120,7 @@
             <% }); %>
         </tbody>
     </table>
-      <h4 id="scrollspyHeading3">Third heading</h4>
+      <h4 id="scrollspyHeading3">Find A Request</h4>
       <p>Content for the third section...</p>
       <p>Content for the third section...</p>
       <p>Content for the third section...</p>
@@ -131,9 +131,20 @@
       <p>Content for the third section...</p>
       <p>Content for the third section...</p>
       <p>Content for the third section...</p>
-      <h4 id="scrollspyHeading4">Fourth heading</h4>
-      <p>Content for the fourth section...</p>
-      <h4 id="scrollspyHeading5">Fifth heading</h4>
+      <h4 id="scrollspyHeading4">Update or Delete a Request</h4>
+      <form id="actionForm" action="/modify" method="POST">
+        <input type="text" name="requestId" id="actionRequestId">
+        <input type="text" name="newTitle" id="actionName" placeholder="Name" required>
+        <input type="text" name="newDescription" id="actionRequestType" placeholder="New Description" required>
+        
+        <!-- Buttons for update and delete -->
+        <button type="submit" id="updateButton" onclick="setAction('update')">Update</button>
+        
+      </form>
+      <button id="deleteButton" onclick="deleteRequest()">Delete</button>
+      <h4 id="scrollspyHeading5">Delete Request</h4>
+      <p>No longer need a job done?</p>
+      <p>You can delete your requests here</p>
       <p>Content for the fifth section...</p>
       <p>Content for the fifth section...</p>
       <p>Content for the fifth section...</p>
@@ -143,6 +154,55 @@
       <p>Content for the fifth section...</p><p>Content for the fifth section...</p>
       <p>Content for the fifth section...</p>
 
-    </div>   
+    </div>  
+
+    <script>
+      console.log("Hello World");
+
+
+      //to get data for modification
+      function getRequestData(id) {
+        //const fetchUrl = `/getRequestData/${id}`;
+        fetch(`/getRequestData/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Populate the form with the fetched data
+                    document.getElementById('actionName').value = data.Name;
+                    document.getElementById('actionRequestType').value = data.Request_Type;
+                    document.getElementById('actionRequestId').value = data.ID;
+
+                    document.getElementById('actionRequestId').setAttribute('data-id', data.ID);
+
+                    console.log(document.getElementById('actionRequestId').getAttribute('data-id'))
+
+                    document.getElementById('actionForm').scrollIntoView({ behavior: 'smooth' });
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+        function deleteRequest() {
+            const userid = document.getElementById('actionRequestId').getAttribute('data-id');
+            //console.log(userid)
+            fetch(`/deleteRequest/${userid}`, {
+                method: 'DELETE',
+            })
+            .then(response => {
+              //console.log("the response: " + response.json())
+              if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+                //return response.json();
+
+            })
+            .then(data => {
+              console.log("attempting delete")
+              location.reload();
+              document.getElementById('actionForm').reset(); 
+            })
+        }
+      
+    </script>
 </body>
 </html>

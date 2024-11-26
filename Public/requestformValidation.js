@@ -2,7 +2,7 @@ let form = document.querySelector("#requestform");
 form.addEventListener("submit", handleFormSubmit)
 
 let nameInput = document.querySelector('#username');
-let descInput = document.querySelector('#desc');
+let descInput = document.querySelector('#userdesc');
 
 nameInput.addEventListener('input', validateName)
 descInput.addEventListener('input', validateDesc)
