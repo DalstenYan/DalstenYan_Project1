@@ -34,8 +34,13 @@ app.use(morgan('dev'))
 
 app.use(express.static('Public'))
 app.use(express.urlencoded({extended:false}))
+
+
+
 var bodyparser = require("body-parser")
 app.use(bodyparser.urlencoded({extended: true}))
+app.use(bodyparser.json());
+
 
 app.set('view engine', 'ejs')
 app.set('views', 'views')
@@ -48,7 +53,7 @@ app.get("/RequestActions", (req,res) =>{
         res.render("RequestActions", {request:results})
     }) 
 })
-//posting request
+//all entries posting request
 app.post("/RequestActions", (req, res) => 
     {
         const request = {username, reqtype, userdesc} = req.body;
@@ -60,38 +65,7 @@ app.post("/RequestActions", (req, res) =>
         res.redirect("/RequestActions");
     })
 
-    app.post('/modify', (req, res) => {
-        const { requestId, newTitle, newDescription } = req.body;
-        const actionType = req.body.actionType;
-      
-        if (actionType === 'update') {
-          // Perform update action
-          const query = 'UPDATE requests SET title = ?, description = ? WHERE id = ?';
-          db.query(query, [newTitle, newDescription, requestId], (err, result) => {
-            if (err) {
-              console.error('Error updating request:', err.stack);
-              return res.status(500).send('Error updating request');
-            }
-      
-            res.redirect('/');
-          });
-        } else if (actionType === 'delete') {
-          // Perform delete action
-          const query = 'DELETE FROM requests WHERE id = ?';
-          con.query(query, [requestId], (err, result) => {
-            if (err) {
-              console.error('Error deleting request:', err.stack);
-              return res.status(500).send('Error deleting request');
-            }
-      
-            res.redirect('/');
-          });
-        } else {
-          res.status(400).send('Invalid action');
-        }
-      });
-
-
+      //get a row and fill out forms when a row is clickd
       app.get('/getRequestData/:id', (req, res) => {
         const requestId = req.params.id;
 
@@ -109,6 +83,7 @@ app.post("/RequestActions", (req, res) =>
         });
       });
 
+      //delete stuff
       app.delete('/deleteRequest/:id', (req, res) => {
         const requestId = req.params.id
         console.log(requestId)
@@ -126,10 +101,37 @@ app.post("/RequestActions", (req, res) =>
             }
             
         });
-        
     });
 
+    app.post('/justupdate', (req, res) => {
+      const {id, description, requestType } = req.body;
+      console.log("UPDATING: " + id + " " + description + " " + requestType)
+    
+      con.query('UPDATE request SET Description = ?, Request_Type = ? WHERE ID = ?', [description, requestType, id], (err, result) => {
+          if (err) {
+              console.error('Error updating the record:', err);
+              return res.status(500).json({ message: 'Error updating the record' });
+          }
+    
+          res.redirect("/RequestActions")
+      });
+    });
 
+    //search stuff
+    app.get('/search', (req, res) => {
+      const searchTerm = req.query.searchTerm || '';
+      const filter = `%${searchTerm.toLowerCase()}%`;
+
+      const query = `
+        SELECT * FROM request
+        WHERE LOWER(ID) LIKE ? OR LOWER(Name) LIKE ? OR LOWER(Request_Type) LIKE ?`;
+      
+      con.query(query, [filter, filter, filter], (err, result) => {
+        if (err) throw err;
+
+        res.json(result);
+      });
+    });
 
 
 //listen

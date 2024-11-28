@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Task Me!</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
@@ -38,10 +38,7 @@
             <a class="nav-link" href="#scrollspyHeading2">See Requests</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#scrollspyHeading3">Find Requests</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#scrollspyHeading4">Modify Requests</a>
+            <a class="nav-link" href="#scrollspyHeading3">Modify Requests</a>
           </li>
         </ul>
     </nav>
@@ -61,7 +58,7 @@
               <option value="">Choose an option</option>
               <option value="Front-End Job">Front-End</option>
               <option value="Back-End Job">Back-End</option>
-              <option value="Full-Stack">Full Stack</option>
+              <option value="Full Stack">Full Stack</option>
               <option value="Video Game Job">Video Game</option>
             </select>     
           </div>
@@ -96,7 +93,14 @@
       <h2 id="scrollspyHeading2">All Submitted Requests</h2>    
       <p>Want me to help you write some software or develop an application for you?</p>
       <p>You're in luck, just let me know the job type and I can get it done!</p>
-    <table class="table table-dark table-striped table-hover requests-table">
+      <div style="margin: 10px;">
+        <h3>Search for an entry:</h3>
+        <form class="form-floating" id="searchbarform">
+          <input type="text" class="form-control" id="requestSearchBar" placeholder="Front-End Job" value="">
+          <label for="requestSearchBar">Enter Name, ID, Request Type</label>
+        </form>
+      </div>
+    <table class="table table-dark table-striped table-hover requests-table" id="requests-table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -107,9 +111,10 @@
                 <th>Description</th>
             </tr>
         </thead>
+        <!--onclick="getRequestData(<%= request.ID %>)" -->
         <tbody>
             <% request.forEach(request => { %>
-                <tr onclick="getRequestData(<%= request.ID %>)" style="cursor: pointer;" data-id="<%= request.ID %>">
+                <tr style="cursor: pointer;" data-id="<%= request.ID %>">
                     <td><%= request.ID %></td>
                     <td><%= request.Name %></td>
                     <td><%= request.Request_Date.toLocaleDateString('en-US') %></td>
@@ -120,28 +125,43 @@
             <% }); %>
         </tbody>
     </table>
-      <h4 id="scrollspyHeading3">Find A Request</h4>
-      <p>Content for the third section...</p>
-      <p>Content for the third section...</p>
-      <p>Content for the third section...</p>
-      <p>Content for the third section...</p>
-      <p>Content for the third section...</p>
-      <p>Content for the third section...</p>
-      <p>Content for the third section...</p>
-      <p>Content for the third section...</p>
-      <p>Content for the third section...</p>
-      <p>Content for the third section...</p>
-      <h4 id="scrollspyHeading4">Update or Delete a Request</h4>
-      <form id="actionForm" action="/modify" method="POST">
-        <input type="text" name="requestId" id="actionRequestId">
-        <input type="text" name="newTitle" id="actionName" placeholder="Name" required>
-        <input type="text" name="newDescription" id="actionRequestType" placeholder="New Description" required>
-        
-        <!-- Buttons for update and delete -->
-        <button type="submit" id="updateButton" onclick="setAction('update')">Update</button>
-        
+      <h4 id="scrollspyHeading3">Update or Delete a Request</h4>
+      <p>Click on an existing row in the table to automatically fill out the fields</p>
+      <form action="/justupdate" method="post" class="row gy-2 gx-3" id="actionForm">
+          <div class="col-auto">
+            <div class="input-group">
+              <span class="input-group-text">@</span>
+              <div class="form-floating">
+                <input type="number" class="form-control" id="actionRequestId" placeholder="1111111" required>
+                <label for="actionRequestId">ID</label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-auto">
+            <label for="actionType">Request Type</label>
+            <select class="form-select" id="actionType" required>
+              <option value="">Choose an option</option>
+              <option value="Front-End Job">Front-End</option>
+              <option value="Back-End Job">Back-End</option>
+              <option value="Full Stack">Full Stack</option>
+              <option value="Video Game Job">Video Game</option>
+            </select>
+          </div>
+
+          <div class="col-auto">
+            <div class="input-group" style="width: 65vw">
+              <span class="input-group-text">(New) Description</span>
+              <textarea class="form-control" aria-label="With textarea" id="actionDescription" placeholder="Description" required></textarea>
+            </div>
+          </div>
+          <button class="btn btn-info" id="updateButton" value="Update Request" onclick="updateRequest()">Update</button>
       </form>
-      <button id="deleteButton" onclick="deleteRequest()">Delete</button>
+      <div class="row">
+        <button class="btn btn-danger" style="margin-top: 5px;" id="deleteButton" onclick="deleteRequest()">Delete</button>
+      </div>
+      
+
       <h4 id="scrollspyHeading5">Delete Request</h4>
       <p>No longer need a job done?</p>
       <p>You can delete your requests here</p>
@@ -155,27 +175,35 @@
       <p>Content for the fifth section...</p>
 
     </div>  
-
+    <!--Function Scripts-->
     <script>
-      console.log("Hello World");
+      const tableBody = document.querySelector('#requests-table tbody');
+
+      tableBody.addEventListener('click', function(event) {
+
+          const row = event.target.closest('tr');
+          if (row && row.dataset.id) {
+              const requestId = row.dataset.id;
+              getRequestData(requestId); 
+          }
+      });
 
 
       //to get data for modification
       function getRequestData(id) {
-        //const fetchUrl = `/getRequestData/${id}`;
+
         fetch(`/getRequestData/${id}`)
                 .then(response => response.json())
                 .then(data => {
-                    // Populate the form with the fetched data
-                    document.getElementById('actionName').value = data.Name;
-                    document.getElementById('actionRequestType').value = data.Request_Type;
+                    document.getElementById('actionRequestId').disabled = true;
+
+                    // put stuff inside the form with the fetched data
+                    document.getElementById('actionDescription').value = data.Description;
+                    console.log(data.Request_Type)
+                    document.getElementById('actionType').value = (data.Request_Type).toString();
                     document.getElementById('actionRequestId').value = data.ID;
 
-                    document.getElementById('actionRequestId').setAttribute('data-id', data.ID);
-
-                    console.log(document.getElementById('actionRequestId').getAttribute('data-id'))
-
-                    document.getElementById('actionForm').scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('scrollspyHeading3').scrollIntoView({ behavior: 'smooth' });
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
@@ -183,7 +211,7 @@
         }
 
         function deleteRequest() {
-            const userid = document.getElementById('actionRequestId').getAttribute('data-id');
+            const userid = document.getElementById('actionRequestId').value;
             //console.log(userid)
             fetch(`/deleteRequest/${userid}`, {
                 method: 'DELETE',
@@ -202,7 +230,87 @@
               document.getElementById('actionForm').reset(); 
             })
         }
+
+        function updateRequest(){
+          event.preventDefault()
+          const requestData = {
+              id: document.getElementById('actionRequestId').value,
+              description: document.getElementById('actionDescription').value,
+              requestType: document.getElementById('actionType').value
+          };
+
+          console.log(requestData);
+
+          fetch(`/justupdate`, {
+              method: 'POST',
+              headers: {
+                'content-Type': 'application/json; charset=UTF-8',
+              },
+              body: JSON.stringify(requestData)
+          })
+          .then(response => {
+            console.log(response)
+            return response;
+          })
+          .then(data => {
+              console.log("Request updated successfully:", data);
+              location.reload();
+              document.getElementById('actionForm').reset();
+          })
+
+        }
       
     </script>
+    <!--Other Scripts-->
+    <script>
+      const searchForm = document.getElementById('searchbarform')
+      const searchInput = document.getElementById('requestSearchBar');
+      const table = document.getElementById('requests-table');
+
+      searchInput.addEventListener('input', function() {
+          const searchTerm = searchInput.value;
+
+
+          fetch(`/search?searchTerm=${encodeURIComponent(searchTerm)}`)
+              .then(response => response.json())
+              .then(data => {
+
+                  const tbody = table.querySelector('tbody');
+                  tbody.innerHTML = '';
+
+
+                  data.forEach(request => {
+                      const row = document.createElement('tr');
+                      row.dataset.id = request.ID;  
+                      row.style.cursor = 'pointer'; 
+                      row.innerHTML = `
+                            <td>${request.ID}</td>
+                            <td>${request.Name}</td>
+                            <td>${new Date(request.Request_Date).toLocaleDateString('en-US')}</td>
+                            <td>${request.Request_Type}</td>
+                            <td>${request.Request_Status}</td>
+                            <td>${request.Description}</td>
+                        `;
+                      tbody.appendChild(row);
+                  });
+              })
+              .catch(err => console.error('Error fetching filtered data:', err));
+      });
+      searchForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const searchTerm = searchInput.value;
+        
+
+        fetch(`/search?searchTerm=${encodeURIComponent(searchTerm)}`)
+            .then(response => response.json())
+            .then(data => {
+                updateTable(data);
+            })
+            .catch(err => console.error('Error fetching filtered data:', err));
+});
+  </script>
+
+
 </body>
 </html>

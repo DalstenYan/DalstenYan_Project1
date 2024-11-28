@@ -153,7 +153,6 @@ html, body, .about-me
 .form-floating label
 {
     color:black;
-    padding: 0px;
 }
 
 .input-group, .input-group-text
@@ -338,4 +337,14 @@ html, body, .about-me
     background-color: #CE2D4F;
     color: white;
     font-size: 40px;
+}
+
+.condensed
+{
+    width: 40%;
+}
+
+.col-auto
+{
+    max-width: 15%;
 }
