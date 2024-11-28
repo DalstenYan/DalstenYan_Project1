@@ -147,6 +147,9 @@
               <option value="Full Stack">Full Stack</option>
               <option value="Video Game Job">Video Game</option>
             </select>
+            <div id="validationServer04Feedback" class="valid-feedback">
+              Please select a valid request.
+            </div>        
           </div>
 
           <div class="col-auto">
@@ -161,18 +164,10 @@
         <button class="btn btn-danger" style="margin-top: 5px;" id="deleteButton" onclick="deleteRequest()">Delete</button>
       </div>
       
-
-      <h4 id="scrollspyHeading5">Delete Request</h4>
-      <p>No longer need a job done?</p>
-      <p>You can delete your requests here</p>
-      <p>Content for the fifth section...</p>
-      <p>Content for the fifth section...</p>
-      <p>Content for the fifth section...</p>
-      <p>Content for the fifth section...</p>
-      <p>Content for the fifth section...</p>
-      <p>Content for the fifth section...</p>
-      <p>Content for the fifth section...</p><p>Content for the fifth section...</p>
-      <p>Content for the fifth section...</p>
+      <h4 id="scrollspyHeading4"></h4>
+      <footer style="background-color:#2a3d45; padding: 10px; color: white; text-align: center;">
+        <h5>Dalsten Yan's Website 2024</h5>
+      </footer>
 
     </div>  
     <!--Function Scripts-->
@@ -233,6 +228,28 @@
 
         function updateRequest(){
           event.preventDefault()
+          var actionInput = document.getElementById('actionType')
+          var typeInput = document.getElementById('actionDescription')
+          if(actionInput.value === "")
+          {
+            actionInput.classList.add("is-invalid")
+            return;
+          }
+          else
+          {
+            actionInput.classList.remove("is-invalid")
+          }
+
+          if(typeInput.value === "")
+          {
+            typeInput.classList.add("is-invalid")
+            return;
+          }
+          else
+          {
+            typeInput.classList.remove("is-invalid")
+          }
+
           const requestData = {
               id: document.getElementById('actionRequestId').value,
               description: document.getElementById('actionDescription').value,
