@@ -30,7 +30,7 @@ function handleFormSubmit(event) {
 function validateDesc() {
     let desc = descInput.value.trim();
     
-    if (desc.length <= 5) {
+    if (desc.length <= 5 || desc.length > 600) {
         descInput.classList.remove('is-valid');
         descInput.classList.add('is-invalid');
         descValid = false;
